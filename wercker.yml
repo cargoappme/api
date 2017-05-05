@@ -12,7 +12,7 @@ build:
         code: yarn build
     - script:
         name: copy build to deployable
-        code: cp ./build/ $WERCKER_OUTPUT_DIR
+        code: cp -r ./build/ $WERCKER_OUTPUT_DIR
     - script:
         name: copy package.json to deployable
         code: cp ./package.json $WERCKER_OUTPUT_DIR
