@@ -1,0 +1,29 @@
+{
+  "name": "api.cargoapp.me",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon --exec .\\node_modules\\.bin\\ts-node -- ./src/dev.ts",
+    "lint": "tslint --project tsconfig.json --type-check --format stylish"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.14",
+    "@types/ws": "^0.0.40",
+    "nodemon": "^1.11.0",
+    "ts-node": "^3.0.2",
+    "tslint": "^5.1.0",
+    "tslint-config-standard": "^5.0.2",
+    "typescript": "^2.3.1"
+  },
+  "dependencies": {
+    "clor": "^5.1.0",
+    "inversify": "^4.1.0",
+    "reflect-metadata": "^0.1.10",
+    "sqlite3": "^3.1.8",
+    "typeorm": "^0.0.11",
+    "ws": "^2.3.1"
+  }
+}
