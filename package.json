@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --exec .\\node_modules\\.bin\\ts-node -- ./src/index.ts",
+    "dev-win": "nodemon --exec .\\node_modules\\.bin\\ts-node -- ./src/index.ts",
+    "dev-lin": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
     "lint": "tslint --project tsconfig.json --type-check --format stylish"
   },
   "devDependencies": {
