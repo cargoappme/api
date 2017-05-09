@@ -12,7 +12,7 @@ build:
         code: yarn build
     - script:
         name: copy build to deployable
-        code: cp ./build/ $WERCKER_OUTPUT_DIR
+        code: cp -r ./build/ $WERCKER_OUTPUT_DIR
     - script:
         name: copy package.json to deployable
         code: cp ./package.json $WERCKER_OUTPUT_DIR
@@ -28,18 +28,18 @@ dokku:
           git init
           git config --global user.name "wercker"
           git config --global user.email "pleasemailus@wercker.com"
-          git remote add origin git@github.com:cargoappme/www.cargoapp.me.git
+          git remote add origin git@heroku.com:cargo-api.git
     - script:
         name: add everything to the repository
         code: |
           git add .
           git commit -m ":package: Result of deploy $WERCKER_GIT_COMMIT"
     - add-to-known_hosts:
-        hostname: github.com
-        fingerprint: 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48
+        hostname: heroku.com
+        fingerprint: 8b:48:5e:67:0e:c9:16:47:32:f2:87:0c:1f:c8:60:ad
     - add-ssh-key:
         keyname: SSH
     - script:
-        name: push to GitHub Pages
+        name: push to Heroku
         code: |
-          git push -f origin master:gh-pages
+          git push -f origin master

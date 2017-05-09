@@ -24,11 +24,17 @@ container.bind<IDatabaseProvider>(TYPES.DatabaseProvider).toProvider<IDatabase>(
   return async () => {
     if (db) return db
 
+    const dbDriver = { type: null, storage: null, url: null }
+    if (process.env.NODE_ENV === 'production') {
+      dbDriver.type = 'sqlite'
+      dbDriver.storage = 'data.db'
+    } else {
+      dbDriver.type = 'postgres'
+      dbDriver.url = process.env.DATABASE_URL
+    }
+
     const conn = await createConnection({
-      driver: {
-        type: 'sqlite',
-        storage: 'data.db'
-      },
+      driver:  dbDriver,
       entities: [
         __dirname + '/entities/*.js',
         __dirname + '/entities/*.ts'
