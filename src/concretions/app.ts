@@ -25,7 +25,7 @@ export class App implements IApp {
     this._logger.log('configuration loaded')
     await this._databaseProvider()
     this._logger.log('database opened')
-    await this._httpServer.listen(this._config.get().ip, this._config.get().port)
-    this._logger.info(`listening on ${this._config.get().ip}:${this._config.get().port}`)
+    await this._httpServer.listen(this._config.get().server.ip, this._config.get().server.port)
+    this._logger.info(`listening on ${this._config.get().server.ip}:${this._config.get().server.port}`)
   }
 }
