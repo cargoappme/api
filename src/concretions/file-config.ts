@@ -1,14 +1,14 @@
 import {injectable} from 'inversify'
 import {IConfig} from '../abstractions/config'
 
-import {DEFAULT_CONFIG} from '../default.config'
+import {config} from '../config'
 
 @injectable()
 export class FileConfig implements IConfig {
   private _config: any
 
   async load () {
-    this._config = DEFAULT_CONFIG
+    this._config = config
   }
 
   get () {

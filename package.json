@@ -4,7 +4,11 @@
   "main": "build/index.js",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": "^7.4.0"
+  },
   "scripts": {
+    "start": "node build/index.js",
     "build": "tsc",
     "dev-win": "nodemon --exec .\\node_modules\\.bin\\ts-node -- ./src/index.ts",
     "dev-lin": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
