@@ -177,8 +177,8 @@ export class HttpServer implements IHttpServer {
       end: {
         date: journey.endDate,
         geo: {
-          lat: journey.startLat,
-          long: journey.startLong
+          lat: journey.endLat,
+          long: journey.endLong
         }
       },
       positions
