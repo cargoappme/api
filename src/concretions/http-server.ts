@@ -123,7 +123,7 @@ export class HttpServer implements IHttpServer {
 
     const journey = await database.entityManager.findOne(Journey, { token: journeyToken })
 
-    if (journey) return ws.close(WS_CLOSE_CODES.NON_EXISTENT_TOKEN)
+    if (!journey) return ws.close(WS_CLOSE_CODES.NON_EXISTENT_TOKEN)
 
     const positions = journey.positions.map(position => {
       return {
