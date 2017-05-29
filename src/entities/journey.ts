@@ -34,5 +34,5 @@ export class Journey {
   isFinished: boolean
 
   @OneToMany(type => Position, position => position.journey)
-  positions: Position[]
+  positions: Promise<Position[]>
 }

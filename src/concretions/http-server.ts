@@ -98,13 +98,42 @@ export class HttpServer implements IHttpServer {
 
       const journeyClients = this._authenticatedClients.get(journeyToken)
       journeyClients.forEach(ws => {
-        ws.send(['position', {
+        ws.send(JSON.stringify(['position', {
           date: position.date,
           geo: {
             lat: position.lat,
             long: position.long
           }
-        }])
+        }]))
+      })
+    })
+
+    this._app.delete('/journeys/:token', async (req, res) => {
+      const journeyToken = req.params.token
+      const journeySecret = req.query.secret
+
+      if (!journeySecret) return res.sendStatus(400)
+
+      const database = await this._databaseProvider()
+
+      const journey = await database.entityManager.findOne(Journey, { token: journeyToken })
+
+      if (!journey) return res.sendStatus(404)
+      if (journey.secret !== journeySecret) return res.sendStatus(401)
+
+      journey.isFinished = true
+
+      await database.entityManager.persist(journey)
+
+      res.sendStatus(204)
+
+      // send update to all related clients
+
+      if (!this._authenticatedClients.has(journeyToken)) return
+
+      const journeyClients = this._authenticatedClients.get(journeyToken)
+      journeyClients.forEach(ws => {
+        ws.send(JSON.stringify(['finished', null]))
       })
     })
 
@@ -125,7 +154,8 @@ export class HttpServer implements IHttpServer {
 
     if (!journey) return ws.close(WS_CLOSE_CODES.NON_EXISTENT_TOKEN)
 
-    const positions = journey.positions.map(position => {
+    const journeyPositions = await journey.positions
+    const positions = journeyPositions.map(position => {
       return {
         date: position.date,
         geo: {
@@ -156,7 +186,7 @@ export class HttpServer implements IHttpServer {
       }
     }
 
-    ws.send(['initial', initialPayload])
+    ws.send(JSON.stringify(['initial', initialPayload]))
 
     if (!this._authenticatedClients.has(journeyToken)) {
       this._authenticatedClients.set(journeyToken, new Set<ws>())
