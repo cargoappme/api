@@ -121,6 +121,7 @@ export class HttpServer implements IHttpServer {
       if (!journey) return res.sendStatus(404)
       if (journey.secret !== journeySecret) return res.sendStatus(401)
 
+      journey.endDate = new Date()
       journey.isFinished = true
 
       await database.entityManager.persist(journey)
@@ -173,17 +174,14 @@ export class HttpServer implements IHttpServer {
           long: journey.startLong
         }
       },
-      positions
-    }
-
-    if (journey.isFinished) {
-      initialPayload['end'] = {
+      end: {
         date: journey.endDate,
         geo: {
           lat: journey.startLat,
           long: journey.startLong
         }
-      }
+      },
+      positions
     }
 
     ws.send(JSON.stringify(['initial', initialPayload]))
